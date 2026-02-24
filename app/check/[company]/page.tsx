@@ -1,3 +1,15 @@
+// SEO: generateMetadata for pSEO
+export async function generateMetadata({
+	params,
+}: {
+	params: { company: string };
+}) {
+	const company = params.company;
+	return {
+		title: `AI Visibility Report for ${company}`,
+		description: `Complete AI search visibility audit for ${company}. Analysis of JSON-LD, structured data, and crawler accessibility.`,
+	};
+}
 import { ScanningAnimation } from '@/components/scanning-animation';
 import { VisibilityDashboard } from '@/components/visibility-dashboard';
 import { FearHookAlert } from '@/components/fear-hook-alert';
@@ -67,11 +79,37 @@ function CheckPageContent({
 		},
 	};
 
+	// BreadcrumbList JSON-LD for SEO
+	const breadcrumbJsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{
+				'@type': 'ListItem',
+				position: 1,
+				name: 'Home',
+				item: 'https://aisearchscanner.com/',
+			},
+			{
+				'@type': 'ListItem',
+				position: 2,
+				name: `Report: ${company}`,
+				item: `https://aisearchscanner.com/check/${company}`,
+			},
+		],
+	};
+
 	return (
 		<>
 			<script
 				type='application/ld+json'
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+			<script
+				type='application/ld+json'
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify(breadcrumbJsonLd),
+				}}
 			/>
 			<div className='min-h-screen bg-linear-to-br from-background via-background to-secondary/20 px-4 py-12'>
 				<div className='max-w-6xl mx-auto space-y-12'>

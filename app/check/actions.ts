@@ -7,17 +7,40 @@ import {
 } from '@/lib/visibility-score';
 import { parseHtmlContent, checkRobotsRules } from '@/lib/html-parser';
 import { fetchRenderedHtml } from '@/lib/puppeteer-html';
+import { scanSchema, rateLimit } from './validation';
+import { getCachedScan, setCachedScan } from './cache';
+
+// IndexNow notification helper
+async function notifyIndexNow(url: string) {
+	const key = process.env.INDEXNOW_KEY || 'YOUR_INDEXNOW_KEY'; // Set in Vercel env
+	const endpoint = `https://api.indexnow.org/indexnow?url=${encodeURIComponent(url)}&key=${key}`;
+	try {
+		const res = await fetch(endpoint);
+		if (res.ok) {
+			console.log('IndexNow notified:', await res.text());
+		} else {
+			console.error('IndexNow error:', res.status, await res.text());
+		}
+	} catch (e) {
+		console.error('IndexNow notification failed:', e);
+	}
+}
 
 export async function scanWebsite(
 	url: string,
 	company: string,
 ): Promise<ScanResult> {
-	// --- Step 1: Validate URL ---
+	// --- Step 0: Rate Limiting ---
+	await rateLimit();
+
+	// --- Step 1: Input Validation ---
 	let finalUrl = url.trim();
-	if (!finalUrl) {
+	try {
+		scanSchema.parse({ url: finalUrl, company });
+	} catch (err: any) {
 		return {
 			company,
-			url: '',
+			url: finalUrl,
 			score: {
 				overall: 0,
 				jsonLd: 0,
@@ -31,7 +54,7 @@ export async function scanWebsite(
 					visible: false,
 					score: 0,
 					recommendations: [
-						'No URL provided. Please enter a valid website URL.',
+						err.errors?.[0]?.message || 'Invalid input.',
 					],
 				},
 				{
@@ -39,7 +62,7 @@ export async function scanWebsite(
 					visible: false,
 					score: 0,
 					recommendations: [
-						'No URL provided. Please enter a valid website URL.',
+						err.errors?.[0]?.message || 'Invalid input.',
 					],
 				},
 				{
@@ -47,7 +70,7 @@ export async function scanWebsite(
 					visible: false,
 					score: 0,
 					recommendations: [
-						'No URL provided. Please enter a valid website URL.',
+						err.errors?.[0]?.message || 'Invalid input.',
 					],
 				},
 			],
@@ -118,7 +141,14 @@ export async function scanWebsite(
 		};
 	}
 
-	// --- Step 2: Fetch and Parse ---
+	// --- Step 2: Caching ---
+	const cacheKey = `${finalUrl}|${company}`;
+	const cached = getCachedScan(cacheKey);
+	if (cached) {
+		return cached;
+	}
+
+	// --- Step 3: Fetch and Parse ---
 	try {
 		// Use AbortController for timeout
 		const controller = new AbortController();
@@ -279,6 +309,9 @@ export async function scanWebsite(
 			robotsRules,
 		};
 
+		setCachedScan(cacheKey, result);
+		// Notify IndexNow (fire and forget)
+		notifyIndexNow(finalUrl).catch(() => {});
 		return result;
 	} catch (error: any) {
 		console.error('Error scanning website:', error);
