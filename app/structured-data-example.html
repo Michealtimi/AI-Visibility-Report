@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Structured Data Example</title>
+		<!-- JSON-LD Structured Data -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "Organization",
+				"name": "Example Company",
+				"url": "https://example.com",
+				"logo": "https://example.com/logo.png",
+				"sameAs": [
+					"https://twitter.com/example",
+					"https://www.facebook.com/example"
+				]
+			}
+		</script>
+		<!-- Open Graph Tags -->
+		<meta
+			property="og:title"
+			content="Example Company"
+		/>
+		<meta
+			property="og:description"
+			content="This is an example company with structured data."
+		/>
+		<meta
+			property="og:url"
+			content="https://example.com"
+		/>
+		<meta
+			property="og:image"
+			content="https://example.com/logo.png"
+		/>
+	</head>
+	<body>
+		<h1>Structured Data Example Page</h1>
+		<p>
+			This page contains JSON-LD and Open Graph structured data for
+			testing your scanner.
+		</p>
+	</body>
+</html>
