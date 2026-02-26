@@ -48,10 +48,9 @@ export default function RootLayout({
 				{/* Google AdSense Verification Script */}
 				<Script
 					id='adsense-init'
-					async
 					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3191981833978007'
 					crossOrigin='anonymous'
-					strategy='afterInteractive'
+					strategy='beforeInteractive' // Force it to load immediately
 				/>
 			</head>
 			<body
