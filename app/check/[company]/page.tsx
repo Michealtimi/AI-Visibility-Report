@@ -2,9 +2,9 @@
 export async function generateMetadata({
 	params,
 }: {
-	params: { company: string };
+	params: Promise<{ company: string }>;
 }) {
-	const company = params.company;
+	const { company } = await params;
 	return {
 		title: `AI Visibility Report for ${company}`,
 		description: `Complete AI search visibility audit for ${company}. Analysis of JSON-LD, structured data, and crawler accessibility.`,
