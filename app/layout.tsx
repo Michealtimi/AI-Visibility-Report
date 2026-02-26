@@ -45,6 +45,11 @@ export default function RootLayout({
 					rel='canonical'
 					href={canonicalUrl}
 				/>
+				{/* Google AdSense Meta Tag for Verification */}
+				<meta
+					name='google-adsense-account'
+					content='ca-pub-3191981833978007'
+				/>
 				{/* Google AdSense Verification Script */}
 				<Script
 					id='adsense-init'
