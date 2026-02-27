@@ -1,0 +1,10 @@
+{
+	"cron": {
+		"jobs": [
+			{
+				"path": "/api/webhook",
+				"schedule": "0 0 * * *" // Runs once per day at midnight
+			}
+		]
+	}
+}
