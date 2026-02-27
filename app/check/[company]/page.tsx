@@ -1,4 +1,11 @@
 // SEO: generateMetadata for pSEO
+import { ScanningAnimation } from '@/components/scanning-animation';
+import { VisibilityDashboard } from '@/components/visibility-dashboard';
+import { FearHookAlert } from '@/components/fear-hook-alert';
+import { PaywallSection } from '@/components/paywall-section';
+import { PDFGenerator } from '@/components/pdf-generator';
+import { ScanResult } from '@/lib/types';
+import { scanWebsite } from '../actions';
 export async function generateMetadata({
 	params,
 }: {
@@ -10,13 +17,6 @@ export async function generateMetadata({
 		description: `Complete AI search visibility audit for ${company}. Analysis of JSON-LD, structured data, and crawler accessibility.`,
 	};
 }
-import { ScanningAnimation } from '@/components/scanning-animation';
-import { VisibilityDashboard } from '@/components/visibility-dashboard';
-import { FearHookAlert } from '@/components/fear-hook-alert';
-import { PaywallSection } from '@/components/paywall-section';
-import { PDFGenerator } from '@/components/pdf-generator';
-import { ScanResult } from '@/lib/types';
-import { scanWebsite } from '../actions';
 
 function CheckPageContent({
 	company,

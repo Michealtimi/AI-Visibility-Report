@@ -4,7 +4,6 @@ import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
 import AdsenseSlot from '@/components/adsense-slot';
-import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
@@ -41,21 +40,16 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<head>
-				<link
-					rel='canonical'
-					href={canonicalUrl}
-				/>
+				{/* ...existing meta and links... */}
+				<script
+					async
+					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3191981833978007'
+					crossOrigin='anonymous'
+				></script>
 				{/* Google AdSense Meta Tag for Verification */}
 				<meta
 					name='google-adsense-account'
 					content='ca-pub-3191981833978007'
-				/>
-				{/* Google AdSense Verification Script */}
-				<Script
-					id='adsense-init'
-					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3191981833978007'
-					crossOrigin='anonymous'
-					strategy='beforeInteractive' // Force it to load immediately
 				/>
 			</head>
 			<body
@@ -65,7 +59,7 @@ export default function RootLayout({
 				<div className='flex flex-col md:flex-row md:items-start w-full max-w-screen-2xl mx-auto'>
 					{/* Left AdSense slot - hidden on small screens */}
 					<div className='hidden md:block md:w-1/6 lg:w-1/5 xl:w-1/6 2xl:w-1/6 px-2'>
-						<AdsenseSlot />
+						<AdsenseSlot return={null} />
 					</div>
 
 					{/* Main content */}
@@ -75,12 +69,12 @@ export default function RootLayout({
 
 					{/* Right AdSense slot - hidden on small screens */}
 					<div className='hidden md:block md:w-1/6 lg:w-1/5 xl:w-1/6 2xl:w-1/6 px-2'>
-						<AdsenseSlot />
+						<AdsenseSlot return={null} />
 					</div>
 
 					{/* Mobile AdSense slot - visible only on small screens, stacked below content */}
 					<div className='block md:hidden w-full px-2 mt-4'>
-						<AdsenseSlot />
+						<AdsenseSlot return={null} />
 					</div>
 				</div>
 				<Analytics />

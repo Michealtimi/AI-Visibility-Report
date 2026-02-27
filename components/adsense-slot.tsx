@@ -3,30 +3,30 @@
 // Replace the ins data-ad-slot with your actual AdSense slot ID
 import { useEffect, useRef, useState } from 'react';
 
+import { CSSProperties } from 'react';
+
+type AdsenseSlotProps = {
+	className?: string;
+	style?: CSSProperties;
+};
+
 export default function AdsenseSlot({
 	className = '',
-}: {
-	className?: string;
-}) {
-	const [adLoaded, setAdLoaded] = useState(false);
+	style = {},
+}: AdsenseSlotProps): JSX.Element {
 	const insRef = useRef<HTMLDivElement>(null);
+	const [adLoaded, setAdLoaded] = useState(false);
 
 	useEffect(() => {
-		function tryPushAd() {
-			if (!insRef.current) return;
-			const width = insRef.current.offsetWidth;
-			if (width && width > 0) {
-				try {
-					// @ts-ignore
-					(window.adsbygoogle = window.adsbygoogle || []).push({});
-					setAdLoaded(true);
-				} catch (e) {
-					setAdLoaded(false);
-				}
+		const tryPushAd = () => {
+			try {
+				// @ts-ignore
+				(window.adsbygoogle = window.adsbygoogle || []).push({});
+				setAdLoaded(true);
+			} catch (e) {
+				setAdLoaded(false);
 			}
-		}
-
-		// Try immediately, then on resize (in case slot is hidden at first)
+		};
 		tryPushAd();
 		window.addEventListener('resize', tryPushAd);
 		return () => {
@@ -46,6 +46,7 @@ export default function AdsenseSlot({
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',
+				...style,
 			}}
 			ref={insRef}
 		>
