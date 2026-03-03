@@ -67,7 +67,7 @@ function CheckPageContent({
 			name: 'AI Search Visibility Scanner',
 			logo: {
 				'@type': 'ImageObject',
-				url: 'https://aisearchvisibility.com/logo.png',
+				url: '/ai-visibility-logo.png',
 			},
 		},
 		aggregateRating: {

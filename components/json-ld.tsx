@@ -5,7 +5,8 @@ export function OrganizationSchema() {
     name: 'AI Search Visibility Scanner',
     description: 'Audit your website visibility to AI search engines like ChatGPT-5, Gemini, and Claude.',
     url: 'https://aisearchvisibility.com',
-    logo: 'https://aisearchvisibility.com/logo.png',
+    // use the static asset so crawlers pick up the correct image reliably
+    logo: '/ai-visibility-logo.png',
     sameAs: [
       'https://twitter.com/aisearchvis',
       'https://linkedin.com/company/ai-search-visibility',

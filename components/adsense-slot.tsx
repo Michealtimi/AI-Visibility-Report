@@ -19,6 +19,15 @@ export default function AdsenseSlot({
 
 	useEffect(() => {
 		const tryPushAd = () => {
+			if (!insRef.current) return;
+			// don't push an ad until the container actually has width;
+			// AdSense throws a TagError when availableWidth is zero.
+			const availableWidth = insRef.current.offsetWidth;
+			if (availableWidth === 0) {
+				// try again on the next frame (resize listener also covers later changes)
+				requestAnimationFrame(tryPushAd);
+				return;
+			}
 			try {
 				// @ts-ignore
 				(window.adsbygoogle = window.adsbygoogle || []).push({});
