@@ -14,7 +14,7 @@ export function VisibilityDashboard({ result }: VisibilityDashboardProps) {
     if (score >= 60) return '#0073e6';
     return '#d32f2f';
   };
-
+  // Helper to get status icon based on visibility and score
   const getStatusIcon = (visible: boolean, score: number) => {
     if (!visible) {
       return <XCircle className="w-6 h-6 text-destructive" />;
