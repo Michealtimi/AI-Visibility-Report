@@ -1,9 +1,13 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'https://aisearchscanner.com';
+  const baseUrl =
+    // you can keep using VERCEL_URL for deployments, but fall back to the
+    // real site instead of the preview link
+    (process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : process.env.BASE_URL) ??
+    'https://ai.logik.website';
 
   return {
     rules: [
@@ -39,6 +43,7 @@ export default function robots(): MetadataRoute.Robots {
         crawlDelay: 0,
       },
     ],
+    // sitemap uses the real subdomain now
     sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
